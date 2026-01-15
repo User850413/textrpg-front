@@ -1,28 +1,28 @@
-import { useEffect, useState } from "react";
-import Connect from "./Communicator/Communicator";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Main from "./pages/Main";
+import Login from "./pages/Login";
+import SignIn from "./pages/SignIn";
+import PrivateRoute from "./auth/PrivateRoute";
+import AuthProvider from "./context/AuthProvider";
+import { ConnProvider } from "./context/ConnProvider";
 
 function App() {
-  const conn = new Connect();
-  const [formData, setFormData] = useState({
-    id:"",
-    password:""
-  })
+    return (
+        <BrowserRouter>
+            <ConnProvider>
+                <AuthProvider>
+                        <Routes>
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/signIn" element={<SignIn />} />
 
-  const onClickLogin = () => {
-    console.log("hi");
-  };
-
-  return (
-    <>
-      <form onSubmit={e => e.preventDefault()}>
-        <label htmlFor="login-id">아이디</label>
-        <input type="text" id="login-id" aria-label="아이디" name="id" />
-        <label htmlFor="login-password">비밀번호</label>
-        <input type="password" id="login-password" area-label="비밀번호" name="password" />
-        <button type="submit" onClick={onClickLogin}>로그인</button>
-      </form>
-    </>
-  )
+                            <Route element={<PrivateRoute />}>
+                                <Route path="/" element={<Main />}></Route>
+                            </Route>
+                        </Routes>
+                </AuthProvider>
+            </ConnProvider>
+        </BrowserRouter>
+    )
 }
 
 export default App

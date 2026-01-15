@@ -3,13 +3,12 @@ import React, { useState } from 'react';
 export function useForm<T extends Record<string, any>>(initialState: T){
     const [form, setForm] = useState<T>(initialState);
 
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = e.target;
+    const setValue = <K extends keyof T>(key: K, value: T[K]) => {
         setForm(prev => ({
             ...prev,
-            [name]: value
-        }))
-    }
+            [key]: value
+        }));
+    };
 
-    return { form, setForm, onChange };
+    return { form, setForm, setValue };
 };
