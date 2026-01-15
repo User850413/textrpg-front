@@ -23,7 +23,6 @@ export const AuthProvider = ({children}: {children: React.ReactNode}) => {
     const navigate = useNavigate();
 
     const checkAuth = async () => {
-        console.log("checkauth now");
         try{
             const response = await connect.client.get("/api/user/me");
             if(response.data?.result === "SUCCESS"){
