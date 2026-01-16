@@ -5,7 +5,7 @@ import type { User } from "./users";
 export type Hero = {
     id: string;
     name: string;
-    location: Place;
+    place: Place;
     backpack: Backpack;
     level: number;
     exp: number;

@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import type { Hero } from '../types/heroes';
 
 /**
@@ -17,6 +16,16 @@ export const CharacterContext = React.createContext<CharacterProviderType | null
 
 export const CharacterProvider = ({children}: {children: React.ReactNode}) => {
     const [character, setCharacter] = React.useState<Hero | null>(null);
+
+    React.useEffect(() => {
+        // localStorage 확인
+        const selectedCharStr = localStorage.getItem("selectedChar");
+        let selectedChar
+        if(selectedCharStr){
+            selectedChar = JSON.parse(selectedCharStr);
+            setCharacter(selectedChar);
+        }
+    }, [])
     
     return (
         <CharacterContext.Provider value={{ character, setCharacter }}>

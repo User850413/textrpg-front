@@ -9,7 +9,7 @@ import React from 'react';
 const MyHome = () => {
     return (
         <div>
-            
+            hi
         </div>
     );
 };

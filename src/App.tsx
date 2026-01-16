@@ -29,11 +29,12 @@ function App() {
 
                                 {/* 캐릭터 필요한 페이지 */}
                                 <Route element={<CharacterGuard />}>
+                                    <Route path="field" element={<FieldLayout />} />
                                     <Route path="field/:fieldId" element={<FieldLayout />} />
                                 </Route>
 
                                 {/* 기본 경로 */}
-                                <Route index element={<Navigate to="characters/select" replace />} />
+                                <Route index element={<Navigate to="field" replace />} />
                             </Route>
                         </Route>
                     </Routes>

@@ -1,7 +1,8 @@
 import React from 'react';
 import { useConn } from '../../hooks/useConn';
 import type { Hero } from '../../types/heroes';
-import { Link } from 'react-router-dom';
+import { Link, replace, useNavigate } from 'react-router-dom';
+import { useCharacter } from '../../hooks/useCharacter';
 
 /**
  *  file : CharacterSelect.tsx
@@ -11,6 +12,8 @@ import { Link } from 'react-router-dom';
 const CharacterSelect = () => {
     const [charList, setCharList] = React.useState<Hero[]>([]);
     const { connect } = useConn();
+    const { setCharacter } = useCharacter();
+    const navigate = useNavigate();
 
     // 캐릭터 리스트 가져오기
     const getCharacters = async () => {
@@ -41,6 +44,13 @@ const CharacterSelect = () => {
         }
     }
 
+    // 캐릭터 선택
+    const onClickSelectCharacter = (c: Hero) => {
+        localStorage.setItem("selectedChar", JSON.stringify(c));
+        setCharacter(c);
+        navigate(`/field/${c.place.placeId}`);
+    }
+
     React.useEffect(() => {
         getCharacters();
     }, [])
@@ -53,7 +63,7 @@ const CharacterSelect = () => {
                     charList.length ? 
                         charList.map(c => (
                         <li key={c.id}>
-                            <p>{c.name}</p>
+                            <button onClick={() => onClickSelectCharacter(c)}><p>{c.name}</p></button>
                             <button onClick={() => deleteCharacter(c.id)}>삭제</button>
                         </li>
                     ))
