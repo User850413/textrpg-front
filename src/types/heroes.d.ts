@@ -11,3 +11,14 @@ export type Hero = {
     exp: number;
     user: User;
 }
+
+export type HeroDetailResponse = {
+    id: string;
+    name: string;
+    locationName: string;
+    locationId: string;
+    backpackName: string;
+    backpackMax: number;
+    level: number;
+    exp: number;
+}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useConn } from '../../hooks/useConn';
-import type { Hero } from '../../types/heroes';
-import { Link, replace, useNavigate } from 'react-router-dom';
+import type { HeroDetailResponse } from '../../types/heroes';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCharacter } from '../../hooks/useCharacter';
 
 /**
@@ -10,7 +10,7 @@ import { useCharacter } from '../../hooks/useCharacter';
  *  updated at : 2026-01-16
  */
 const CharacterSelect = () => {
-    const [charList, setCharList] = React.useState<Hero[]>([]);
+    const [charList, setCharList] = React.useState<HeroDetailResponse[]>([]);
     const { connect } = useConn();
     const { setCharacter } = useCharacter();
     const navigate = useNavigate();
@@ -45,10 +45,10 @@ const CharacterSelect = () => {
     }
 
     // 캐릭터 선택
-    const onClickSelectCharacter = (c: Hero) => {
+    const onClickSelectCharacter = (c: HeroDetailResponse) => {
         localStorage.setItem("selectedChar", JSON.stringify(c));
         setCharacter(c);
-        navigate(`/field/${c.place.placeId}`);
+        navigate(`/field/${c.locationId}`);
     }
 
     React.useEffect(() => {

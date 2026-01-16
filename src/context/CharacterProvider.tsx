@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Hero } from '../types/heroes';
+import type { HeroDetailResponse } from '../types/heroes';
 
 /**
  *  file : CharacterProvider.tsx
@@ -8,14 +8,14 @@ import type { Hero } from '../types/heroes';
  */
 
 interface CharacterProviderType {
-    character: Hero | null;
-    setCharacter: React.Dispatch<React.SetStateAction<Hero | null>>;
+    character: HeroDetailResponse | null;
+    setCharacter: React.Dispatch<React.SetStateAction<HeroDetailResponse | null>>;
 }
 
 export const CharacterContext = React.createContext<CharacterProviderType | null>(null);
 
 export const CharacterProvider = ({children}: {children: React.ReactNode}) => {
-    const [character, setCharacter] = React.useState<Hero | null>(null);
+    const [character, setCharacter] = React.useState<HeroDetailResponse | null>(null);
 
     React.useEffect(() => {
         // localStorage 확인

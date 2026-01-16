@@ -41,8 +41,21 @@ const Header = () => {
             <p>{user?.userName}님 환영합니다.</p>
             {character && (
                 <div>
-                    <span>{character.name}</span>
                     <button onClick={onClickReSelectChar}>재선택</button>
+                    <ul>
+                        <li>
+                            <span>이름 : </span>
+                            <span>{character.name}</span>
+                        </li>
+                        <li>
+                            <span>레벨 : </span>
+                            <span>{character.level}</span>
+                        </li>
+                        <li>
+                            <span>인벤토리 : </span>
+                            <span>0/{character.backpackMax}</span>
+                        </li>
+                    </ul>
                 </div>
             )}
         </div>
