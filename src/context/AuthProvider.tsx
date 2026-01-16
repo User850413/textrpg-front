@@ -1,20 +1,17 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useConn } from '../hooks/useConn';
 import { useNavigate } from 'react-router-dom';
+import type { User } from '../types/users';
 
 interface AuthProviderType {
     user: User | null;
     setUser: React.Dispatch<React.SetStateAction<User | null>>;
-    checkAuth : any;
-    loading: any;
+    checkAuth : () => Promise<void>;
+    loading: boolean;
 }
 
 export const AuthContext = React.createContext<AuthProviderType | null>(null);
 
-type User = {
-    userId: String;
-    userName: String;
-}
 export const AuthProvider = ({children}: {children: React.ReactNode}) => {
     const {connect} = useConn();
 

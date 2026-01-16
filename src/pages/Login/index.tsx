@@ -3,6 +3,7 @@ import Connect from '../../Communicator/Communicator';
 import { useForm } from '../../hooks/useForm';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import AuthForm from '../../components/form/AuthForm';
 
 /**
  *  file : Login.tsx
@@ -33,15 +34,15 @@ const Login = () => {
 
     return (
         <div>
-            <h1>로그인 페이지</h1>
-            <form onSubmit={e => e.preventDefault()}>
-                <label htmlFor="login-id">아이디</label>
-                <input type="text" id="login-id" aria-label="아이디" onChange={e => setValue("userId", e.target.value)} value={form.userId} />
-                <label htmlFor="login-password">비밀번호</label>
-                <input type="password" id="login-password" area-label="비밀번호" onChange={e => setValue("userPwd", e.target.value)}  value={form.userPwd}/>
-                <button type="submit" onClick={onClickLogin}>로그인</button>
-            </form>
+            <AuthForm>
+                <h1>로그인 페이지</h1>
+                    <label htmlFor="login-id">아이디</label>
+                    <input type="text" id="login-id" aria-label="아이디" onChange={e => setValue("userId", e.target.value)} value={form.userId} />
+                    <label htmlFor="login-password">비밀번호</label>
+                    <input type="password" id="login-password" area-label="비밀번호" onChange={e => setValue("userPwd", e.target.value)}  value={form.userPwd}/>
+                    <button type="submit" onClick={onClickLogin}>로그인</button>
 
+            </AuthForm>
             <Link to="/signIn">회원가입하러 가기</Link>
         </div>
     );

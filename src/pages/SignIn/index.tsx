@@ -2,6 +2,7 @@ import React from 'react';
 import Connect from '../../Communicator/Communicator';
 import { useForm } from '../../hooks/useForm';
 import { Link } from 'react-router-dom';
+import AuthForm from '../../components/form/AuthForm';
 
 /**
  *  file : SignIn.tsx
@@ -30,7 +31,7 @@ const SignIn = () => {
     return (
         <div>
             <h1>회원가입 페이지</h1>
-            <form onSubmit={e => e.preventDefault()}>
+            <AuthForm>
                 <label htmlFor="login-id">아이디</label>
                 <input type="text" id="login-id" aria-label="아이디" onChange={e => setValue("userId", e.target.value)} value={form.userId} />
                 <label htmlFor="login-userName">닉네임</label>
@@ -38,7 +39,7 @@ const SignIn = () => {
                 <label htmlFor="login-password">비밀번호</label>
                 <input type="password" id="login-password" area-label="비밀번호" onChange={e => setValue("userPwd", e.target.value)}  value={form.userPwd}/>
                 <button type="submit" onClick={onClickLogin}>회원가입</button>
-            </form>
+            </AuthForm>
 
             <Link to="/login">로그인하러 가기</Link>
         </div>
