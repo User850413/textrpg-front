@@ -4,17 +4,15 @@ import { CharacterProvider } from "../../context/CharacterProvider";
 
 /**
  *  file : Main.tsx
- *  page : 메인
- *  updated at : 2026-01-15
+ *  page : 메인 레이아웃
+ *  updated at : 2026-01-16
  */
 const Main = () => {
     return (
-        <div>
-            <CharacterProvider>
-                <Header />
-                <Outlet />
-            </CharacterProvider>
-        </div>
+        <CharacterProvider>
+            <Header />
+            <Outlet />
+        </CharacterProvider>
     );
 };
 

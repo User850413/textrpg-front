@@ -1,8 +1,9 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Main from "./pages/Main";
 import Login from "./pages/Login";
 import SignIn from "./pages/SignIn";
 import PrivateRoute from "./auth/PrivateRoute";
+import CharacterGuard from "./auth/CharacterGuard";
 import AuthProvider from "./context/AuthProvider";
 import { ConnProvider } from "./context/ConnProvider";
 import CharacterSelect from "./pages/Heros/CharacterSelect";
@@ -14,25 +15,28 @@ function App() {
         <BrowserRouter>
             <ConnProvider>
                 <AuthProvider>
-                        <Routes>
-                            {/* 공개 페이지 */}
-                            <Route path="/login" element={<Login />} />
-                            <Route path="/signIn" element={<SignIn />} />
+                    <Routes>
+                        {/* 공개 페이지 */}
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/signIn" element={<SignIn />} />
 
-                            {/* 로그인 인증 후 */}
-                            <Route element={<PrivateRoute />}>
-                                <Route path="/" element={<Main />}>
-                                    {/* 캐릭터 영역 */}
-                                    <Route path="/characters">
-                                        <Route path="select" element={<CharacterSelect />} />
-                                        <Route path="create" element={<CharacterCreate />} />
-                                    </Route>
+                        {/* 인증 필요 페이지 */}
+                        <Route element={<PrivateRoute />}>
+                            <Route path="/" element={<Main />}>
+                                {/* 캐릭터 선택 (항상 가능) */}
+                                <Route path="characters/select" element={<CharacterSelect />} />
+                                <Route path="characters/create" element={<CharacterCreate />} />
 
-                                    {/* 필드 영역 */}
-                                    <Route path="/field/:fieldId" element={<FieldLayout />} />
+                                {/* 캐릭터 필요한 페이지 */}
+                                <Route element={<CharacterGuard />}>
+                                    <Route path="field/:fieldId" element={<FieldLayout />} />
                                 </Route>
+
+                                {/* 기본 경로 */}
+                                <Route index element={<Navigate to="characters/select" replace />} />
                             </Route>
-                        </Routes>
+                        </Route>
+                    </Routes>
                 </AuthProvider>
             </ConnProvider>
         </BrowserRouter>

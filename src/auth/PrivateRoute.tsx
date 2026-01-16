@@ -11,11 +11,7 @@ const PrivateRoute = () => {
     if(user == null || !user.userId) {
         return <Navigate to="/login" replace />
     }else{
-        return (
-            <>
-                <Outlet />
-            </>
-        )
+        return (<Outlet />)
     }
 };
 
