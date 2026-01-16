@@ -29,8 +29,13 @@ const CharacterSelect = () => {
 
     // 캐릭터 삭제
     const deleteCharacter = async (id: string) => {
+        if(!confirm("정말로 삭제하시겠습니까?")) return;
         try{
-            console.log(`${id} deleted`)
+            const response = await connect.client.delete(`/api/hero/delete/${id}`);
+            if(response.data?.result === "SUCCESS"){
+                alert("삭제 성공");
+                getCharacters();
+            }
         }catch(error){
             console.error(error)
         }
