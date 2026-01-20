@@ -3,3 +3,10 @@ export type Backpack = {
     maxCarriage: number;
     name: string;
 }
+
+export type BackpackResponse = {
+    id: string;
+    name: string;
+    maxCarriage: number;
+    currentCarriage: number;
+}

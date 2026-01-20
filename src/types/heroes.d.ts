@@ -1,5 +1,5 @@
-import type { Backpack } from "./backpacks";
-import type { Place } from "./place";
+import type { Backpack, BackpackResponse } from "./backpacks";
+import type { Place, PlaceResponse } from "./place";
 import type { User } from "./users";
 
 export type Hero = {
@@ -12,13 +12,20 @@ export type Hero = {
     user: User;
 }
 
+export type HeroGeneralResponse = {
+    id: string;
+    name: string;
+    location: PlaceResponse;
+    backpack: BackpackResponse;
+    level: number;
+    exp: number;
+}
+
 export type HeroDetailResponse = {
     id: string;
     name: string;
-    locationName: string;
-    locationId: string;
-    backpackName: string;
-    backpackMax: number;
+    location: PlaceResponse;
+    backpack: BackpackResponse;
     level: number;
     exp: number;
 }

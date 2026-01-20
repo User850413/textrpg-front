@@ -53,7 +53,7 @@ const Header = () => {
                         </li>
                         <li>
                             <span>인벤토리 : </span>
-                            <span>0/{character.backpackMax}</span>
+                            <span>{character.backpack.currentCarriage}/{character.backpack.maxCarriage}</span>
                         </li>
                     </ul>
                 </div>

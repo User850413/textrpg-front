@@ -1,6 +1,6 @@
 import React from 'react';
 import { useConn } from '../../hooks/useConn';
-import type { HeroDetailResponse } from '../../types/heroes';
+import type { HeroDetailResponse, HeroGeneralResponse } from '../../types/heroes';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCharacter } from '../../hooks/useCharacter';
 
@@ -10,7 +10,7 @@ import { useCharacter } from '../../hooks/useCharacter';
  *  updated at : 2026-01-16
  */
 const CharacterSelect = () => {
-    const [charList, setCharList] = React.useState<HeroDetailResponse[]>([]);
+    const [charList, setCharList] = React.useState<HeroGeneralResponse[]>([]);
     const { connect } = useConn();
     const { setCharacter } = useCharacter();
     const navigate = useNavigate();
@@ -45,10 +45,20 @@ const CharacterSelect = () => {
     }
 
     // 캐릭터 선택
-    const onClickSelectCharacter = (c: HeroDetailResponse) => {
-        localStorage.setItem("selectedChar", JSON.stringify(c));
-        setCharacter(c);
-        navigate(`/field/${c.locationId}`);
+    const onClickSelectCharacter = async (c: HeroGeneralResponse) => {
+        try{
+            const response = await connect.client.get(`/api/hero/${c.id}/detail`);
+            if(response.data?.result === "SUCCESS"){
+                const {data}: {data:HeroDetailResponse} = response.data;
+                setCharacter(data);
+                localStorage.setItem("selectedChar", JSON.stringify(data));
+                navigate(`/field/${data.location.placeId}`);
+            }else{
+                console.log(response);
+            }
+        }catch(error){
+            console.error(error);
+        }
     }
 
     React.useEffect(() => {
