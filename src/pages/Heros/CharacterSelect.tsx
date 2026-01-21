@@ -12,7 +12,7 @@ import { useCharacter } from '../../hooks/useCharacter';
 const CharacterSelect = () => {
     const [charList, setCharList] = React.useState<HeroGeneralResponse[]>([]);
     const { connect } = useConn();
-    const { setCharacter } = useCharacter();
+    const { setCharacter, getItemsData } = useCharacter();
     const navigate = useNavigate();
 
     // 캐릭터 리스트 가져오기
@@ -50,8 +50,11 @@ const CharacterSelect = () => {
             const response = await connect.client.get(`/api/hero/${c.id}/detail`);
             if(response.data?.result === "SUCCESS"){
                 const {data}: {data:HeroDetailResponse} = response.data;
+                getItemsData(data.id);
+
                 setCharacter(data);
                 localStorage.setItem("selectedChar", JSON.stringify(data));
+                
                 navigate(`/field/${data.location.placeId}`);
             }else{
                 console.log(response);

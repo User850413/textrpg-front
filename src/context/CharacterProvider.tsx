@@ -14,8 +14,11 @@ import type { Items } from '../types/items';
 interface CharacterProviderType {
     character: HeroDetailResponse | null;
     setCharacter: React.Dispatch<React.SetStateAction<HeroDetailResponse | null>>;
-    addItem: (itemId: string, count: number) => Promise<void>;
     items: Items[] | null;
+    setItems: React.Dispatch<React.SetStateAction<Items[]>>;
+
+    getItemsData: (heroId: string) => Promise<Items[]>;
+    addItem: (itemId: string, count: number) => Promise<void>;
 }
 
 export const CharacterContext = React.createContext<CharacterProviderType | null>(null);
@@ -23,27 +26,28 @@ export const CharacterContext = React.createContext<CharacterProviderType | null
 export const CharacterProvider = ({children}: {children: React.ReactNode}) => {
     const {connect} = useConn();
     const [character, setCharacter] = React.useState<HeroDetailResponse | null>(null);
-    const [items, setItems] = React.useState<Items[] | null>(null);
+    const [items, setItems] = React.useState<Items[]>([]);
 
     // item 목록 가져오기
     const getItemsData = async (heroId:string) => {
-        if(!heroId) return;
+        if(!heroId) return [];
 
         try{
             const response = await connect.client.get(`/api/heroItem/${heroId}`);
             if(response.data?.result === "SUCCESS"){
-                const {data} = response.data;
-                setItems(data);
+                const {data}: {data:Items[]} = response.data;
+                if(data) setItems(data);
             }
-
         }catch(error){
             console.error(error);
         }
+        
+        return [];
     }
 
     // item 획득
     const addItem = async (itemId:string, count:number) => {
-        if(!character || character == null || character == undefined) return;
+        if(!character) return;
         if(character.backpack.maxCarriage <= character.backpack.currentCarriage) {
             console.error("가방이 가득 찼습니다!");
             return;
@@ -60,10 +64,7 @@ export const CharacterProvider = ({children}: {children: React.ReactNode}) => {
                 const {data}: {data: getItem} = response.data;
                 const newBackpack: BackpackResponse = {...character.backpack, currentCarriage:data.currentCarriage};
 
-                setCharacter(prev => {
-                    if(!prev) return prev;
-                    else return {...prev, backpack:newBackpack}
-                });
+                setCharacter(prev => ({...prev!, backpack:newBackpack}));
                 getItemsData(heroId);
             }
         }catch(error){
@@ -76,7 +77,8 @@ export const CharacterProvider = ({children}: {children: React.ReactNode}) => {
         const selectedCharStr = localStorage.getItem("selectedChar");
         let selectedChar
         if(selectedCharStr){
-            selectedChar = JSON.parse(selectedCharStr);
+            selectedChar = JSON.parse(selectedCharStr) as HeroDetailResponse;
+            console.log("표시되는 캐릭터: ", selectedChar);
             if(selectedChar){
                 setCharacter(selectedChar);
                 getItemsData(selectedChar.id);
@@ -85,7 +87,7 @@ export const CharacterProvider = ({children}: {children: React.ReactNode}) => {
     }, [])
     
     return (
-        <CharacterContext.Provider value={{ character, setCharacter, addItem, items }}>
+        <CharacterContext.Provider value={{ character, setCharacter, addItem, items, setItems, getItemsData }}>
             {children}
         </CharacterContext.Provider>
     );

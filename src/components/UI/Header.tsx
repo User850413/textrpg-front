@@ -12,7 +12,7 @@ import { useCharacter } from '../../hooks/useCharacter';
 const Header = () => {
     const {connect} = useConn();
     const {user} = useAuth();
-    const {character, setCharacter, items} = useCharacter();
+    const {character, setCharacter, items, setItems} = useCharacter();
     const navigate = useNavigate();
 
     // 로그아웃
@@ -32,6 +32,7 @@ const Header = () => {
     const onClickReSelectChar = () => {
         if(!confirm("다시 선택하시겠습니까?")) return;
         setCharacter(null);
+        setItems([]);
         localStorage.removeItem("selectedChar");
     }
 
@@ -55,7 +56,7 @@ const Header = () => {
                         </li>
                         <li>
                             <span>인벤토리({character.backpack.currentCarriage}/{character.backpack.maxCarriage}) : </span>
-                            <span>{items?.map(i => <span>{`${i.itemName}(${i.itemCount})`}, </span>)}</span>
+                            <span>{items && items.length && items?.map(i => <span>{`${i.itemName}(${i.itemCount})`}, </span>)}</span>
                         </li>
                     </ul>
                 </div>
