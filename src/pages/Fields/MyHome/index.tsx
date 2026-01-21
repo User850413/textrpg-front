@@ -1,5 +1,4 @@
 import React from 'react';
-import { useConn } from '../../../hooks/useConn';
 import { useCharacter } from '../../../hooks/useCharacter';
 
 /**
@@ -9,25 +8,9 @@ import { useCharacter } from '../../../hooks/useCharacter';
  */
 
 const MyHome = () => {
-    const {connect} = useConn();
-    const {character} = useCharacter();
+    const {addMaterialItem} = useCharacter();
 
-    const onClickGetItem = async () => {
-        try{
-            const heroId = character?.id;
-
-            const param = {
-                heroId,
-                itemId:"0d7ee8bf-032f-40fe-8437-93b9168d1bf9",
-                count:1
-            }
-            const response = await connect.client.post("/api/heroItem/getItem", param);
-            console.log(response);
-        }catch(error){
-            console.error(error);
-        }
-    }
-
+    const onClickGetItem = () => addMaterialItem("32aed76b-cf0b-4b9c-8314-b7c6ab3fe119", 1);
     return (
         <div>
             <button onClick={onClickGetItem}>테스트 아이템 얻기</button>
