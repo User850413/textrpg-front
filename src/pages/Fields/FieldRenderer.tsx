@@ -1,5 +1,6 @@
 import React from 'react';
 import MyHome from './MyHome';
+import Forest from './Forest';
 
 /**
  *  file : FieldRenderer.tsx
@@ -8,7 +9,8 @@ import MyHome from './MyHome';
  */
 
 const fieldMap : Record<string, React.ComponentType> = {
-    HOME: MyHome
+    HOME: MyHome,
+    FOREST: Forest,
 }
 
 const FieldRenderer = ({ fieldId } : { fieldId : string }) => {

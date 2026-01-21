@@ -77,6 +77,9 @@ const CharacterSelect = () => {
                         charList.map(c => (
                         <li key={c.id}>
                             <button onClick={() => onClickSelectCharacter(c)}><p>{c.name}</p></button>
+                            <span>위치 : {c.location.name}/</span>
+                            <span>가방 : {c.backpack.name}</span>
+                            <span></span>
                             <button onClick={() => deleteCharacter(c.id)}>삭제</button>
                         </li>
                     ))

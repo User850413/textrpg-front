@@ -4,6 +4,8 @@ import { useConn } from '../hooks/useConn';
 import type { getItem } from '../types/heroItem';
 import type { BackpackResponse } from '../types/backpacks';
 import type { Items } from '../types/items';
+import type { PlaceDetailResponse } from '../types/place';
+import { useNavigate } from 'react-router-dom';
 
 /**
  *  file : CharacterProvider.tsx
@@ -19,6 +21,7 @@ interface CharacterProviderType {
 
     getItemsData: (heroId: string) => Promise<Items[]>;
     addItem: (itemId: string, count: number) => Promise<void>;
+    moveLocation: (placeId: string) => Promise<PlaceDetailResponse | null>;
 }
 
 export const CharacterContext = React.createContext<CharacterProviderType | null>(null);
@@ -27,6 +30,8 @@ export const CharacterProvider = ({children}: {children: React.ReactNode}) => {
     const {connect} = useConn();
     const [character, setCharacter] = React.useState<HeroDetailResponse | null>(null);
     const [items, setItems] = React.useState<Items[]>([]);
+
+    const navigate = useNavigate();
 
     // item 목록 가져오기
     const getItemsData = async (heroId:string) => {
@@ -72,6 +77,27 @@ export const CharacterProvider = ({children}: {children: React.ReactNode}) => {
         }
     }
 
+    // 이동
+    const moveLocation = async (placeId:string) => {
+        if(!character || !navigate) return null;
+        try{
+            const params = {
+                heroId:character.id,
+                placeId
+            }
+            const response = await connect.client.patch("/api/hero/move", params);
+            if(response.data?.result === "SUCCESS"){
+                const {data}: {data:PlaceDetailResponse} = response.data;
+                setCharacter(prev => ({...prev!, location: data}));
+                navigate(`/field/${data.placeId}`);
+                return data;
+            }
+        }catch(error){
+            console.error(error);
+        }
+        return null;
+    }
+
     React.useEffect(() => {
         // localStorage 확인
         const selectedCharStr = localStorage.getItem("selectedChar");
@@ -87,7 +113,7 @@ export const CharacterProvider = ({children}: {children: React.ReactNode}) => {
     }, [])
     
     return (
-        <CharacterContext.Provider value={{ character, setCharacter, addItem, items, setItems, getItemsData }}>
+        <CharacterContext.Provider value={{ character, setCharacter, addItem, items, setItems, getItemsData, moveLocation}}>
             {children}
         </CharacterContext.Provider>
     );

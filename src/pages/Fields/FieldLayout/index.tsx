@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import FieldRenderer from '../FieldRenderer';
 import { useConn } from '../../../hooks/useConn';
 import { useCharacter } from '../../../hooks/useCharacter';
@@ -12,21 +12,21 @@ import type { PlaceDetailResponse } from '../../../types/place';
  */
 const FieldLayout = () => {
     const {connect} = useConn();
-    const {character} = useCharacter();
+    const {character, moveLocation} = useCharacter();
+
     let {fieldId} = useParams();
     if(!fieldId) fieldId = "HOME"
 
     const [field, setField] = useState<PlaceDetailResponse>();
     
-    // 갈 수 있는 지역 data불러오기
-    const getReachablePlaceData = async () => {
+    // 지역 상세데이터 불러오기
+    const getPlaceDetailData = async () => {
         if(!character) return;
         try{
             const params = {placeId : character.location.id}
             const response = await connect.client.get("/api/place/detail", {params});
             if(response.data?.result === "SUCCESS"){
                 const {data} : {data:PlaceDetailResponse} = response.data;
-                console.log(data);
                 setField(data);
             }
         }catch(error){
@@ -34,11 +34,9 @@ const FieldLayout = () => {
         }
     }
 
-    const onClickMove = () => {}
-
     React.useEffect(() => {
-        getReachablePlaceData();
-    }, [])
+        getPlaceDetailData();
+    }, [character?.location.id, fieldId]);
 
     return (
         <div>
@@ -47,7 +45,7 @@ const FieldLayout = () => {
                 {field && field.connectedPlace.length && (<ul>
                     {field.connectedPlace.map(pc => (
                         <li key={pc.id}>
-                            <button onClick={onClickMove}>{pc.name}</button>
+                            <button onClick={() => moveLocation(pc.id)}>{pc.name}</button>
                         </li>
                     ))}
                 </ul>)}
