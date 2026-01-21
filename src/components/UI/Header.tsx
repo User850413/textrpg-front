@@ -56,7 +56,11 @@ const Header = () => {
                         </li>
                         <li>
                             <span>인벤토리({character.backpack.currentCarriage}/{character.backpack.maxCarriage}) : </span>
-                            <span>{items && items.length && items?.map(i => <span>{`${i.itemName}(${i.itemCount})`}, </span>)}</span>
+                            <span>{items && items.length && items?.map(i => <span key={i.itemName}>{`${i.itemName}(${i.itemCount})`}, </span>)}</span>
+                        </li>
+                        <li>
+                            <span>위치 : </span>
+                            <span>{character.location.name}</span>
                         </li>
                     </ul>
                 </div>
