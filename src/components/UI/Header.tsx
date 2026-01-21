@@ -12,7 +12,7 @@ import { useCharacter } from '../../hooks/useCharacter';
 const Header = () => {
     const {connect} = useConn();
     const {user} = useAuth();
-    const {character, setCharacter} = useCharacter();
+    const {character, setCharacter, items} = useCharacter();
     const navigate = useNavigate();
 
     // 로그아웃
@@ -35,6 +35,8 @@ const Header = () => {
         localStorage.removeItem("selectedChar");
     }
 
+    // 인벤토리 확인
+
     return (
         <div>
             <button type="button" onClick={onClickLogout}>로그아웃</button>
@@ -52,8 +54,8 @@ const Header = () => {
                             <span>{character.level}</span>
                         </li>
                         <li>
-                            <span>인벤토리 : </span>
-                            <span>{character.backpack.currentCarriage}/{character.backpack.maxCarriage}</span>
+                            <span>인벤토리({character.backpack.currentCarriage}/{character.backpack.maxCarriage}) : </span>
+                            <span>{items?.map(i => <span>{`${i.itemName}(${i.itemCount})`}, </span>)}</span>
                         </li>
                     </ul>
                 </div>

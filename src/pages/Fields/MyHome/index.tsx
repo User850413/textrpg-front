@@ -8,9 +8,9 @@ import { useCharacter } from '../../../hooks/useCharacter';
  */
 
 const MyHome = () => {
-    const {addMaterialItem} = useCharacter();
+    const {addItem} = useCharacter();
 
-    const onClickGetItem = () => addMaterialItem("32aed76b-cf0b-4b9c-8314-b7c6ab3fe119", 1);
+    const onClickGetItem = () => addItem("b6becc3a-34d9-4205-9590-a0a12bac2205", 1);
     return (
         <div>
             <button onClick={onClickGetItem}>테스트 아이템 얻기</button>
